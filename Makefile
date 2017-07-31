@@ -82,8 +82,9 @@ CXXFLAGS := ${CXXFLAGS} ${DEFS}
 #****************************************************************************
 
 OUTPUT := xmltest
+LIB := libtinyxml.a
 
-all: ${OUTPUT}
+all: ${OUTPUT} ${LIB}
 
 
 #****************************************************************************
@@ -91,11 +92,13 @@ all: ${OUTPUT}
 #****************************************************************************
 
 SRCS := tinyxml.cpp tinyxmlparser.cpp xmltest.cpp tinyxmlerror.cpp tinystr.cpp
+LIBSRC := tinyxml.cpp tinyxmlparser.cpp tinyxmlerror.cpp tinystr.cpp
 
 # Add on the sources for libraries
 SRCS := ${SRCS}
 
 OBJS := $(addsuffix .o,$(basename ${SRCS}))
+LIBOBJS := $(addsuffix .o,$(basename ${LIBSRCS}))
 
 #****************************************************************************
 # Output
@@ -103,6 +106,8 @@ OBJS := $(addsuffix .o,$(basename ${SRCS}))
 
 ${OUTPUT}: ${OBJS}
 	${LD} -o $@ ${LDFLAGS} ${OBJS} ${LIBS} ${EXTRA_LIBS}
+${LIB} : ${LIBOBJS}
+	${AR} $@ $^
 
 #****************************************************************************
 # common rules
