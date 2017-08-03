@@ -15,7 +15,7 @@ PROFILE        := NO
 
 # TINYXML_USE_STL can be used to turn on STL support. NO, then STL
 # will not be used. YES will include the STL files.
-TINYXML_USE_STL := YES
+TINYXML_USE_STL := NO
 
 #****************************************************************************
 
@@ -92,7 +92,7 @@ all: ${OUTPUT} ${LIB}
 #****************************************************************************
 
 SRCS := tinyxml.cpp tinyxmlparser.cpp xmltest.cpp tinyxmlerror.cpp tinystr.cpp
-LIBSRC := tinyxml.cpp tinyxmlparser.cpp tinyxmlerror.cpp tinystr.cpp
+LIBSRCS := tinyxml.cpp tinyxmlparser.cpp tinyxmlerror.cpp tinystr.cpp
 
 # Add on the sources for libraries
 SRCS := ${SRCS}
@@ -107,7 +107,7 @@ LIBOBJS := $(addsuffix .o,$(basename ${LIBSRCS}))
 ${OUTPUT}: ${OBJS}
 	${LD} -o $@ ${LDFLAGS} ${OBJS} ${LIBS} ${EXTRA_LIBS}
 ${LIB} : ${LIBOBJS}
-	${AR} $@ $^
+	${AR} $@ $^ 
 
 #****************************************************************************
 # common rules
@@ -129,7 +129,8 @@ clean:
 depend:
 	#makedepend ${INCS} ${SRCS}
 
-tinyxml.o: tinyxml.h tinystr.h
-tinyxmlparser.o: tinyxml.h tinystr.h
-xmltest.o: tinyxml.h tinystr.h
-tinyxmlerror.o: tinyxml.h tinystr.h
+tinyxml.o: tinyxml.cpp tinystr.h
+tinyxmlparser.o: tinyxmlparser.cpp tinystr.h
+xmltest.o: xmltest.cpp tinystr.h
+tinyxmlerror.o: tinyxmlerror.cpp tinystr.h
+tinystr.o: tinystr.cpp tinystr.h
